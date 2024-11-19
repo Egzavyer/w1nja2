@@ -45,7 +45,8 @@ void PeerDiscovery::discoverPeers() {
     char recvbuf[1025];
     int recvbuflen = 1024;
     int peeraddrlen = sizeof(peerAddr);
-    for (int i = 0; i < 2; i++) { //TODO: put in a while with a flag for interrupting or do polling
+    //for (int i = 0; i < 2; i++) { //TODO: put in a while with a flag for interrupting or do polling
+    while (getPeerTable().empty()) {
         bytesReceived = recvfrom(sock, recvbuf, recvbuflen, 0, (SOCKADDR *) &peerAddr, &peeraddrlen);
         if (bytesReceived == SOCKET_ERROR) {
             throw std::runtime_error("recvfrom failed: " + std::to_string(WSAGetLastError()));
@@ -62,12 +63,13 @@ void PeerDiscovery::discoverPeers() {
                 port += recvbuf[i];
             }
             inet_ntop(AF_INET, &(peerAddr.sin_addr), ipbuf, INET_ADDRSTRLEN);
-            addPeer(ipbuf, stoi(port)); // TODO: send TCP port number in msg to use for file transfer
+            addPeer(ipbuf, stoi(port));
         }
     }
 }
 
 void PeerDiscovery::addPeer(const std::string &ipAddress, const int &port) {
+    std::lock_guard<std::mutex> lock(peerTableMutex);
     peerTable.push_back({ipAddress, port});
 }
 
@@ -76,6 +78,7 @@ SOCKET PeerDiscovery::getSock() const {
 }
 
 std::vector<NearbyPeer> PeerDiscovery::getPeerTable() {
+    std::lock_guard<std::mutex> lock(peerTableMutex);
     return peerTable;
 }
 
@@ -89,10 +92,12 @@ void PeerDiscovery::broadcastRequest() {
 }
 
 void PeerDiscovery::broadcastResponse() {
-    char sendbuf[] = {'1', '8', '0', '8', '0', '\0'};
+    //TODO: change this to tcp port
+    std::string sendbuf = '1' + std::to_string(udpPort) + '\0';
     int sendbuflen = (int) (sizeof(sendbuf) - 1);
 
-    if ((sendto(sock, sendbuf, sendbuflen, 0, (SOCKADDR *) &broadcastAddr, sizeof(broadcastAddr))) == SOCKET_ERROR) {
+    if ((sendto(sock, sendbuf.c_str(), sendbuflen, 0, (SOCKADDR *) &broadcastAddr, sizeof(broadcastAddr))) ==
+        SOCKET_ERROR) {
         throw std::runtime_error("sendto failed: " + std::to_string(WSAGetLastError()));
     }
 }

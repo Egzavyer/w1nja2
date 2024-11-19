@@ -9,6 +9,7 @@
 #include <vector>
 #include <iostream>
 #include <cstring>
+#include <mutex>
 
 typedef struct NearbyPeer {
     std::string ipAddress;
@@ -39,6 +40,7 @@ private:
 
     void addPeer(const std::string &ipAddress, const int &port);
 
+    std::mutex peerTableMutex;
     std::vector<NearbyPeer> peerTable;
     SOCKET sock;
     int udpPort = 8080;
