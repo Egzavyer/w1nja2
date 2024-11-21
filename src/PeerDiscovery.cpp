@@ -115,7 +115,7 @@ void PeerDiscovery::broadcastResponse()
     std::string sendbuf = '1' + std::to_string(udpPort) + '\0';
     int sendbuflen = (int)(sizeof(sendbuf) - 1);
 
-    if ((sendto(sock, sendbuf.c_str(), sendbuflen, 0, (SOCKADDR *)&broadcastAddr, sizeof(broadcastAddr))) ==
+    if ((sendto(sock, sendbuf.c_str(), sendbuflen, 0, (SOCKADDR *)&peerAddr, sizeof(peerAddr))) ==
         SOCKET_ERROR)
     {
         throw std::runtime_error("sendto failed: " + std::to_string(WSAGetLastError()));
