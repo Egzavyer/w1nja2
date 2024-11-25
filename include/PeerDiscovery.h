@@ -7,6 +7,7 @@
 #include <mswsock.h>
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include <iostream>
 #include <cstring>
 #include <mutex>
@@ -22,7 +23,7 @@ public:
 
     SOCKET getSock() const;
 
-    std::vector<NearbyPeer> getPeerTable();
+    std::unordered_map<std::string, int> getPeerTable();
 
     void broadcastRequest();
 
@@ -41,7 +42,7 @@ private:
     void addPeer(const std::string &ipAddress, const int &port);
 
     std::mutex peerTableMutex;
-    std::vector<NearbyPeer> peerTable;
+    std::unordered_map<std::string, int> peerTable;
     SOCKET sock;
     int udpPort = 8080;
     struct sockaddr_in udpAddr{AF_INET, htons(udpPort)};
