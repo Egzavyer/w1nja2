@@ -19,11 +19,14 @@ public:
 
     unsigned long long getTCPSocket() override;
 
-    std::string receiveDataUDP(char *recvbuf, int recvbuflen) override;
+    int getUDPPort() override;
 
-    void broadcastRequest() override;
+    int getTCPPort() override;
 
-    void broadcastResponse() override;
+    std::pair<std::string, int> receiveDataUDP(char *recvbuf, int recvbuflen) override;
+
+    void broadcast(std::string sendbuf, int sendbuflen) override;
+
 
 private:
     void initialise() override;
@@ -40,7 +43,7 @@ private:
     SOCKET tcpSocket;
     int udpPort;
     int tcpPort;
-    struct sockaddr_in broadcastAddr;
+    struct sockaddr_in broadcastAddr{};
 
 };
 

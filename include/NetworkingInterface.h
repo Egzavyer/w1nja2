@@ -12,11 +12,13 @@ public:
 
     virtual unsigned long long getTCPSocket() = 0;
 
-    virtual void broadcastRequest() = 0;
+    virtual int getUDPPort() = 0;
 
-    virtual void broadcastResponse() = 0;
+    virtual int getTCPPort() = 0;
 
-    virtual std::string receiveDataUDP(char *recvbuf, int recvbuflen) = 0;
+    virtual void broadcast(std::string sendbuf, int sendbuflen) = 0;
+
+    virtual std::pair<std::string, int> receiveDataUDP(char *recvbuf, int recvbuflen) = 0;
 
     virtual void initialise() = 0;
 
@@ -27,7 +29,7 @@ public:
     virtual void bindUDPSocket() = 0;
 
     virtual void bindTCPSocket() = 0;
-    
+
 };
 
 #endif //NETWORKING_INTERFACE_H

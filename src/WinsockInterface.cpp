@@ -65,15 +65,7 @@ void WinsockInterface::bindTCPSocket() {
     }
 }
 
-unsigned long long WinsockInterface::getUDPSocket() {
-    return udpSocket;
-}
-
-unsigned long long WinsockInterface::getTCPSocket() {
-    return tcpSocket;
-}
-
-std::string WinsockInterface::receiveDataUDP(char *recvbuf, int recvbuflen) {
+std::pair<std::string, int> WinsockInterface::receiveDataUDP(char *recvbuf, int recvbuflen) {
     //return address and port of sender
     int bytesReceived;
     char ipbuf[INET_ADDRSTRLEN];
@@ -85,20 +77,35 @@ std::string WinsockInterface::receiveDataUDP(char *recvbuf, int recvbuflen) {
     }
     recvbuf[bytesReceived] = '\0';
     inet_ntop(AF_INET, &(peerAddr.sin_addr), ipbuf, INET_ADDRSTRLEN);
-    return std::string(ipbuf) + "::" + std::string(recvbuf).substr(1);
+
+    std::pair<std::string, int> peerInfo{std::string(ipbuf), stoi(std::string(recvbuf).substr(1))};
+    return peerInfo;
 }
 
-void WinsockInterface::broadcastRequest() {
-    std::string sendbuf = "0" + std::to_string(tcpPort);
-    int sendbuflen = (int) (sizeof(sendbuf) - 1);
-
+void WinsockInterface::broadcast(std::string sendbuf, int sendbuflen) {
     if ((sendto(udpSocket, sendbuf.c_str(), sendbuflen, 0, (SOCKADDR *) &broadcastAddr, sizeof(broadcastAddr))) ==
         SOCKET_ERROR) {
         throw std::runtime_error("sendto failed: " + std::to_string(WSAGetLastError()));
     }
 }
 
-void WinsockInterface::broadcastResponse() {
+unsigned long long WinsockInterface::getUDPSocket() {
+    return udpSocket;
+}
+
+unsigned long long WinsockInterface::getTCPSocket() {
+    return tcpSocket;
+}
+
+int WinsockInterface::getUDPPort() {
+    return udpPort;
+}
+
+int WinsockInterface::getTCPPort() {
+    return tcpPort;
+}
+
+/*void WinsockInterface::broadcastResponse() {
     std::string sendbuf = "1" + std::to_string(tcpPort);
     int sendbuflen = (int) (sizeof(sendbuf) - 1);
 
@@ -106,4 +113,4 @@ void WinsockInterface::broadcastResponse() {
         SOCKET_ERROR) {
         throw std::runtime_error("sendto failed: " + std::to_string(WSAGetLastError()));
     }
-}
+}*/
