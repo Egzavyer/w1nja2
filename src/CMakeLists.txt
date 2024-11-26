@@ -1,6 +1,7 @@
 set(SOURCES
         main.cpp
         PeerDiscovery.cpp
+        WinsockInterface.cpp
 )
 
 add_executable(w1nja ${SOURCES})
