@@ -14,7 +14,7 @@ void PeerDiscovery::discoverPeers() {
     while (true) { //TODO: put in a while with a flag for interrupting or do polling or select
         //while (getPeerTable().size() < 2) {
         std::pair<std::string, int> peerInfo = n.receiveDataUDP(recvbuf, recvbuflen);
-        if (peerTable.find(peerInfo.first) == peerTable.end()) {
+        if (peerTable.find(peerInfo.first) == peerTable.end()) { //TODO: find a way to remove or not add own ip
             addPeer(peerInfo.first, peerInfo.second);
             if (recvbuf[0] == '0') {
                 broadcastResponse(); //TODO: maybe send info directly to requester's udp port
