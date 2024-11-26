@@ -66,11 +66,11 @@ void WinsockInterface::bindTCPSocket() {
 }
 
 std::pair<std::string, int> WinsockInterface::receiveDataUDP(char *recvbuf, int recvbuflen) {
-    //return address and port of sender
     int bytesReceived;
     char ipbuf[INET_ADDRSTRLEN];
     struct sockaddr_in peerAddr{};
     int peeraddrlen = sizeof(peerAddr);
+
     if ((bytesReceived = recvfrom(udpSocket, recvbuf, recvbuflen, 0, (SOCKADDR *) &peerAddr, &peeraddrlen)) ==
         SOCKET_ERROR) {
         throw std::runtime_error("recvfrom failed: " + std::to_string(WSAGetLastError()));
@@ -104,13 +104,3 @@ int WinsockInterface::getUDPPort() {
 int WinsockInterface::getTCPPort() {
     return tcpPort;
 }
-
-/*void WinsockInterface::broadcastResponse() {
-    std::string sendbuf = "1" + std::to_string(tcpPort);
-    int sendbuflen = (int) (sizeof(sendbuf) - 1);
-
-    if ((sendto(udpSocket, sendbuf.c_str(), sendbuflen, 0, (SOCKADDR *) &broadcastAddr, sizeof(broadcastAddr))) ==
-        SOCKET_ERROR) {
-        throw std::runtime_error("sendto failed: " + std::to_string(WSAGetLastError()));
-    }
-}*/
