@@ -10,10 +10,11 @@ void PeerDiscovery::discoverPeers() {
     char recvbuf[1025];
     int recvbuflen = 1024;
 
-    while (true) {
+    while (true) { //TODO: put in a while with a flag for interrupting or do polling or select
         //while (getPeerTable().size() < 2) {
         std::string peerInfo;
-        peerInfo = n.receiveDataUDP(recvbuf, recvbuflen);
+        peerInfo = n.receiveDataUDP(recvbuf,
+                                    recvbuflen); //TODO: maybe return a std::pair to avoid parsing the string for ip and port
         std::cout << "Peer at: " << peerInfo << std::endl;
         if (recvbuf[0] == '0') {
             std::cout << "Request received 0\n";
