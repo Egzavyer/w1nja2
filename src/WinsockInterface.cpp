@@ -5,6 +5,8 @@ WinsockInterface::WinsockInterface() {
     tcpSocket = INVALID_SOCKET;
     udpPort = 8080;
     tcpPort = 8081;
+    broadcastAddr.sin_family = AF_INET;
+    broadcastAddr.sin_port = htons(udpPort);
     broadcastAddr.sin_addr.s_addr = inet_addr("255.255.255.255");
 }
 
@@ -42,14 +44,15 @@ void WinsockInterface::createTCPSocket() {
 
 void WinsockInterface::bindUDPSocket() {
     struct sockaddr_in udpAddr{AF_INET, htons(udpPort)};
+    udpAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+    if (bind(udpSocket, (SOCKADDR *) &udpAddr, sizeof(udpAddr))) {
+        throw std::runtime_error("udp bind failed: " + std::to_string(WSAGetLastError()));
+    }
+
     int optval = 1;
     if ((setsockopt(udpSocket, SOL_SOCKET, SO_BROADCAST, (char *) &optval, sizeof(optval))) == SOCKET_ERROR) {
         throw std::runtime_error("udp setsockopt failed: " + std::to_string(WSAGetLastError()));
-    }
-
-    udpAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    if (bind(udpSocket, (SOCKADDR *) &udpAddr, sizeof(udpAddr))) {
-        throw std::runtime_error("udp bind failed: " + std::to_string(WSAGetLastError()));
     }
 }
 
@@ -74,7 +77,7 @@ std::string WinsockInterface::receiveDataUDP(char *recvbuf, int recvbuflen) {
     //return address and port of sender
     int bytesReceived;
     char ipbuf[INET_ADDRSTRLEN];
-    struct sockaddr_in peerAddr;
+    struct sockaddr_in peerAddr{};
     int peeraddrlen = sizeof(peerAddr);
     if ((bytesReceived = recvfrom(udpSocket, recvbuf, recvbuflen, 0, (SOCKADDR *) &peerAddr, &peeraddrlen)) ==
         SOCKET_ERROR) {

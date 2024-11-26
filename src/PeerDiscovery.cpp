@@ -1,12 +1,7 @@
 #include "PeerDiscovery.h"
 
 PeerDiscovery::PeerDiscovery(NetworkingInterface &ni) : n(ni) {
-    //initWinsock();
-    //sock = createSocket();
-    //bindSocket();
-    //broadcastAddr.sin_addr.s_addr = inet_addr("255.255.255.255");
-    //broadcastRequest();
-    ni.broadcastRequest();
+    n.broadcastRequest();
 }
 
 void PeerDiscovery::discoverPeers() {

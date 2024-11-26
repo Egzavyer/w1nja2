@@ -36,11 +36,11 @@ private:
 
     void bindTCPSocket() override;
 
-    unsigned long long udpSocket;
-    unsigned long long tcpSocket;
+    SOCKET udpSocket;
+    SOCKET tcpSocket;
     int udpPort;
     int tcpPort;
-    struct sockaddr_in broadcastAddr{AF_INET, htons(udpPort)};
+    struct sockaddr_in broadcastAddr;
 
 };
 
