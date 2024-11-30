@@ -30,6 +30,10 @@ public:
 
     virtual void bindTCPSocket() = 0;
 
+    virtual void listenOnTCPSocket() = 0;
+
+    virtual unsigned long long acceptTCPConnection() = 0;
+
 };
 
 #endif //NETWORKING_INTERFACE_H

@@ -6,8 +6,10 @@
 #include <mswsock.h>
 #include <stdexcept>
 #include <iostream>
+#include <thread>
 
 #include "NetworkingInterface.h"
+
 
 class WinsockInterface : public NetworkingInterface {
 public:
@@ -38,6 +40,10 @@ private:
     void bindUDPSocket() override;
 
     void bindTCPSocket() override;
+
+    void listenOnTCPSocket() override;
+
+    unsigned long long acceptTCPConnection() override;
 
     SOCKET udpSocket;
     SOCKET tcpSocket;

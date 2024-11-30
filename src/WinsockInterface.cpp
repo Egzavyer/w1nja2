@@ -31,6 +31,7 @@ void WinsockInterface::initialise() {
 void WinsockInterface::createUDPSocket() {
     udpSocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (udpSocket == INVALID_SOCKET) {
+        WSACleanup();
         throw std::runtime_error("udp socket failed: " + std::to_string(WSAGetLastError()));
     }
 }
@@ -38,6 +39,7 @@ void WinsockInterface::createUDPSocket() {
 void WinsockInterface::createTCPSocket() {
     tcpSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (tcpSocket == INVALID_SOCKET) {
+        WSACleanup();
         throw std::runtime_error("tcp socket failed: " + std::to_string(WSAGetLastError()));
     }
 }
@@ -47,11 +49,13 @@ void WinsockInterface::bindUDPSocket() {
     udpAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     if (bind(udpSocket, (SOCKADDR *) &udpAddr, sizeof(udpAddr))) {
+        WSACleanup();
         throw std::runtime_error("udp bind failed: " + std::to_string(WSAGetLastError()));
     }
 
     int optval = 1;
     if ((setsockopt(udpSocket, SOL_SOCKET, SO_BROADCAST, (char *) &optval, sizeof(optval))) == SOCKET_ERROR) {
+        WSACleanup();
         throw std::runtime_error("udp setsockopt failed: " + std::to_string(WSAGetLastError()));
     }
 }
@@ -61,6 +65,7 @@ void WinsockInterface::bindTCPSocket() {
 
     tcpAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     if (bind(tcpSocket, (SOCKADDR *) &tcpAddr, sizeof(tcpAddr))) {
+        WSACleanup();
         throw std::runtime_error("tcp bind failed: " + std::to_string(WSAGetLastError()));
     }
 }
@@ -73,6 +78,7 @@ std::pair<std::string, int> WinsockInterface::receiveDataUDP(char *recvbuf, int 
 
     if ((bytesReceived = recvfrom(udpSocket, recvbuf, recvbuflen, 0, (SOCKADDR *) &peerAddr, &peeraddrlen)) ==
         SOCKET_ERROR) {
+        WSACleanup();
         throw std::runtime_error("recvfrom failed: " + std::to_string(WSAGetLastError()));
     }
     recvbuf[bytesReceived] = '\0';
@@ -85,8 +91,27 @@ std::pair<std::string, int> WinsockInterface::receiveDataUDP(char *recvbuf, int 
 void WinsockInterface::broadcast(std::string sendbuf, int sendbuflen) {
     if ((sendto(udpSocket, sendbuf.c_str(), sendbuflen, 0, (SOCKADDR *) &broadcastAddr, sizeof(broadcastAddr))) ==
         SOCKET_ERROR) {
+        WSACleanup();
         throw std::runtime_error("sendto failed: " + std::to_string(WSAGetLastError()));
     }
+}
+
+void WinsockInterface::listenOnTCPSocket() {
+    if (listen(tcpSocket, SOMAXCONN) == SOCKET_ERROR) {
+        WSACleanup();
+        throw std::runtime_error("listen failed: " + std::to_string(WSAGetLastError()));
+    }
+}
+
+unsigned long long WinsockInterface::acceptTCPConnection() {
+    SOCKET clientSocket = INVALID_SOCKET;
+
+    if ((clientSocket = accept(tcpSocket, nullptr, nullptr)) == INVALID_SOCKET) {
+        closesocket(tcpSocket);
+        WSACleanup();
+        throw std::runtime_error("accept failed: " + std::to_string(WSAGetLastError()));
+    }
+    return clientSocket;
 }
 
 unsigned long long WinsockInterface::getUDPSocket() {
@@ -104,3 +129,7 @@ int WinsockInterface::getUDPPort() {
 int WinsockInterface::getTCPPort() {
     return tcpPort;
 }
+
+
+
+
