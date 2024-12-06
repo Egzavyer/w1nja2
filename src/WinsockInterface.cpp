@@ -104,13 +104,3 @@ int WinsockInterface::getUDPPort() {
 int WinsockInterface::getTCPPort() {
     return tcpPort;
 }
-
-/*void WinsockInterface::broadcastResponse() {
-    std::string sendbuf = "1" + std::to_string(tcpPort);
-    int sendbuflen = (int) (sizeof(sendbuf) - 1);
-
-    if ((sendto(udpSocket, sendbuf.c_str(), sendbuflen, 0, (SOCKADDR *) &broadcastAddr, sizeof(broadcastAddr))) ==
-        SOCKET_ERROR) {
-        throw std::runtime_error("sendto failed: " + std::to_string(WSAGetLastError()));
-    }
-}*/

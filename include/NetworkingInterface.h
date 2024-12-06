@@ -6,6 +6,8 @@
 
 class NetworkingInterface {
 public:
+    virtual ~NetworkingInterface() = default;
+
     virtual void startup() = 0;
 
     virtual unsigned long long getUDPSocket() = 0;
@@ -29,7 +31,6 @@ public:
     virtual void bindUDPSocket() = 0;
 
     virtual void bindTCPSocket() = 0;
-
 };
 
 #endif //NETWORKING_INTERFACE_H

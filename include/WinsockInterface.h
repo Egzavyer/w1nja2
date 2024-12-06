@@ -1,6 +1,8 @@
 #ifndef WINSOCK_INTERFACE_H
 #define WINSOCK_INTERFACE_H
 
+#ifdef _WIN32
+
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <mswsock.h>
@@ -47,5 +49,5 @@ private:
 
 };
 
-
+#endif //_WIN32
 #endif //WINSOCK_INTERFACE_H
