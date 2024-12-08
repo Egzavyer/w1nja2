@@ -3,12 +3,16 @@ if (WIN32)
             main.cpp
             PeerDiscovery.cpp
             WinsockInterface.cpp
+            Peer.cpp
+            FileHandler.cpp
     )
 elseif (UNIX)
     set(SOURCES
             main.cpp
             PeerDiscovery.cpp
             LinuxInterface.cpp
+            Peer.cpp
+            FileHandler.cpp
     )
 endif (WIN32)
 

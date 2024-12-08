@@ -1,21 +1,22 @@
 #include "PeerDiscovery.h"
 
-PeerDiscovery::PeerDiscovery(NetworkingInterface &ni) : n(ni) {
-
+PeerDiscovery::PeerDiscovery(NetworkingInterface &networkingInterface) : ni(networkingInterface) {
     broadcastRequest();
 }
 
 void PeerDiscovery::discoverPeers() {
-    std::cout << "UDP Socket: " << n.getUDPSocket() << std::endl;
-    std::cout << "TCP Socket: " << n.getTCPSocket() << std::endl;
-    char recvbuf[1025];
-    int recvbuflen = 1024;
+    std::cout << "UDP Socket: " << ni.getUDPSocket() << std::endl;
+    std::cout << "TCP Socket: " << ni.getTCPSocket() << std::endl;
 
-    while (true) { //TODO: put in a while with a flag for interrupting or do polling or select
+    while (true) {
+        constexpr int recvbuflen = 1024;
+        char recvbuf[1025];
+        //TODO: put in a while with a flag for interrupting or do polling or select
         //while (getPeerTable().size() < 2) {
-        std::pair<std::string, int> peerInfo = n.receiveDataUDP(recvbuf, recvbuflen);
-        if (peerTable.find(peerInfo.first) == peerTable.end()) { //TODO: find a way to remove or not add own ip
-            addPeer(peerInfo.first, peerInfo.second);
+        auto [ip, port] = ni.receiveDataUDP(recvbuf, recvbuflen);
+        if (!peerTable.contains(ip)) {
+            //TODO: find a way to remove or not add own ip
+            addPeer(ip, port);
             if (recvbuf[0] == '0') {
                 broadcastResponse(); //TODO: maybe send info directly to requester's udp port
             }
@@ -23,14 +24,14 @@ void PeerDiscovery::discoverPeers() {
     }
 }
 
-void PeerDiscovery::broadcastRequest() {
-    std::string sendbuf = "0" + std::to_string(n.getTCPPort());
-    n.broadcast(sendbuf, (int) sendbuf.size());
+void PeerDiscovery::broadcastRequest() const {
+    std::string sendbuf = "0" + std::to_string(ni.getTCPPort());
+    ni.broadcast(sendbuf, static_cast<int>(sendbuf.size()));
 }
 
-void PeerDiscovery::broadcastResponse() {
-    std::string sendbuf = "1" + std::to_string(n.getTCPPort());
-    n.broadcast(sendbuf, (int) sendbuf.size());
+void PeerDiscovery::broadcastResponse() const {
+    std::string sendbuf = "1" + std::to_string(ni.getTCPPort());
+    ni.broadcast(sendbuf, static_cast<int>(sendbuf.size()));
 }
 
 void PeerDiscovery::addPeer(const std::string &ipAddress, const int &port) {
