@@ -20,6 +20,9 @@ int main() {
 #endif //_Win32
 
     Peer peer(peerDiscovery, fileHandler);
-    peer.startPeerDiscovery();
+    std::thread t(&Peer::startPeer,peer);
+    if (t.joinable()) {
+        t.join();
+    }
     return 0;
 }

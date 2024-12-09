@@ -10,9 +10,11 @@ class Peer {
 public:
     explicit Peer(PeerDiscovery &peerDiscovery, ConnectionHandler &fileHandler);
 
-    void startPeerDiscovery();
+    void startPeer();
 
 private:
+    void startPeerDiscovery();
+
     PeerDiscovery &pd;
     ConnectionHandler &fh;
 };
