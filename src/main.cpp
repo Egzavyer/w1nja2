@@ -3,7 +3,7 @@
 #include "LinuxInterface.h"
 #include <thread>
 #include "Peer.h"
-#include "FileHandler.h"
+#include "ConnectionHandler.h"
 
 
 int main() {
@@ -11,12 +11,12 @@ int main() {
     WinsockInterface wi;
     wi.startup();
     PeerDiscovery peerDiscovery(wi);
-    FileHandler fileHandler(wi);
+    ConnectionHandler fileHandler(wi);
 #elif __linux__
     LinuxInterface li;
     li.startup();
     PeerDiscovery peerDiscovery(li);
-    FileHandler fileHandler(li);
+    ConnectionHandler fileHandler(li);
 #endif //_Win32
 
     Peer peer(peerDiscovery, fileHandler);

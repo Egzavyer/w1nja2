@@ -4,17 +4,17 @@
 #include <thread>
 
 #include "PeerDiscovery.h"
-#include "FileHandler.h"
+#include "ConnectionHandler.h"
 
 class Peer {
 public:
-    explicit Peer(PeerDiscovery &peerDiscovery, FileHandler &fileHandler);
+    explicit Peer(PeerDiscovery &peerDiscovery, ConnectionHandler &fileHandler);
 
     void startPeerDiscovery();
 
 private:
     PeerDiscovery &pd;
-    FileHandler &fh;
+    ConnectionHandler &fh;
 };
 
 

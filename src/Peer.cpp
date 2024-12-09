@@ -1,6 +1,6 @@
 #include "../include/Peer.h"
 
-Peer::Peer(PeerDiscovery &peerDiscovery, FileHandler &fileHandler) : pd(peerDiscovery), fh(fileHandler) {
+Peer::Peer(PeerDiscovery &peerDiscovery, ConnectionHandler &fileHandler) : pd(peerDiscovery), fh(fileHandler) {
 }
 
 void Peer::startPeerDiscovery() {

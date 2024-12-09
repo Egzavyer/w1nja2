@@ -3,9 +3,9 @@
 
 #include "NetworkingInterface.h"
 
-class FileHandler {
+class ConnectionHandler {
 public:
-    explicit FileHandler(NetworkingInterface &networkingInterface);
+    explicit ConnectionHandler(NetworkingInterface &networkingInterface);
 
 private:
     NetworkingInterface &ni;
