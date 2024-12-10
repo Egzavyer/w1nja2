@@ -33,6 +33,10 @@ public:
 
     virtual const unsigned long long acceptSocketConnection() = 0;
 
+    virtual int sendDataTCP(const unsigned long long &socket, const char *sendbuf, int sendbuflen) = 0;
+
+    virtual int receiveDataTCP(const unsigned long long &socket, char *recvbuf, int recvbuflen) = 0;
+
     virtual void initialise() = 0;
 
     virtual void createUDPSocket() = 0;

@@ -66,7 +66,8 @@ void LinuxInterface::bindUDPSocket() {
     }
 
     int optval = 1;
-    if ((setsockopt(udpSocket, SOL_SOCKET, SO_BROADCAST, (char *) &optval, sizeof(optval))) == -1) {
+    if ((setsockopt(udpSocket, SOL_SOCKET, SO_BROADCAST, (char *) &optval,
+                    sizeof(optval))) == -1) {
         throw std::runtime_error("udp setsockopt failed: " + std::string(strerror(errno)));
     }
 }
@@ -146,6 +147,15 @@ const unsigned long long LinuxInterface::acceptSocketConnection() {
     inet_ntop(AF_INET, &(address.sin_addr), peerIP, INET_ADDRSTRLEN);
     std::cout << "Accepted connection from " << peerIP << std::endl;
     return clientSock;
+}
+
+int LinuxInterface::sendDataTCP(const unsigned long long &socket, const char *sendbuf, int sendbuflen) {
+    return send(static_cast<int>(socket), sendbuf, sendbuflen, 0);
+}
+
+
+int LinuxInterface::receiveDataTCP(const unsigned long long &socket, char *recvbuf, int recvbuflen) {
+    return recv(socket, recvbuf, recvbuflen, 0);
 }
 
 

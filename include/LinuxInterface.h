@@ -41,6 +41,10 @@ public:
 
     const unsigned long long acceptSocketConnection() override;
 
+    int sendDataTCP(const unsigned long long &socket, const char *sendbuf, int sendbuflen) override;
+
+    int receiveDataTCP(const unsigned long long &socket, char *recvbuf, int recvbuflen) override;
+
 private:
     void initialise() override;
 
