@@ -39,6 +39,7 @@ void ConnectionHandler::connectTo(std::string &ip, int &port) {
     if ((bytes = ni.sendDataTCP(ni.getTCPClientSocket(), sendbuf.c_str(), sendbuf.size())) == -1) {
         throw std::runtime_error("send failed: " + std::string(strerror(errno)));
     }
+    std::cout << "Bytes sent: " << bytes << std::endl;
 }
 
 

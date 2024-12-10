@@ -25,7 +25,7 @@ int main() {
     if (t.joinable()) {
         t.join();
     }*/
-    std::string ip = "172.18.29.105";
+    std::string ip = "172.18.0.3";
     peer.connectToPeer(ip);
 
     while (true) {

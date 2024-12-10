@@ -20,11 +20,15 @@ void Peer::startHandlingConnections() {
 }
 
 void Peer::connectToPeer(std::string &ip) {
-    std::string test = "127.0.0.1";
-    //std::string test = "172.18.0.3";
+    //std::string test = "127.0.0.1";
+    std::string test = "172.18.0.3";
     int port = 8081;
-    ch.connectTo(test, port);
-    //ch.connectTo(ip, pd.getPeerTable()[ip]);
+    //ch.connectTo(test, port);
+    //TODO: breaks everything since trying to get a value from table that might not be there yet
+    std::cout << "Connecting to :" << ip << "::" << pd.getPeerTable()[ip] << std::endl;
+    while (pd.getPeerTable().size() != 2) {
+    }
+    ch.connectTo(ip, pd.getPeerTable()[ip]);
 }
 
 
