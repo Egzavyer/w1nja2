@@ -20,7 +20,7 @@ void Peer::startHandlingConnections() {
 }
 
 void Peer::connectToPeer(std::string &ip) {
-    std::string test = "127.0.0.1";
+    std::string test = "172.18.0.3";
     int port = 8081;
     ch.connectTo(test, port);
     //ch.connectTo(ip, pd.getPeerTable()[ip]);

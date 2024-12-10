@@ -130,7 +130,9 @@ void LinuxInterface::connectToSocket(std::string &ip, int &port) {
     if (connect(tcpClientSocket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) < 0) {
         throw std::runtime_error("connect failed: " + std::string(strerror(errno)));
     }
-    std::cout << "CONNECTED\n";
+    char peerIP[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(addr.sin_addr), peerIP, INET_ADDRSTRLEN);
+    std::cout << "Connected to: " << peerIP << std::endl;
 }
 
 const unsigned long long LinuxInterface::acceptSocketConnection() {
@@ -140,6 +142,9 @@ const unsigned long long LinuxInterface::acceptSocketConnection() {
     if ((clientSock = accept(tcpServerSocket, reinterpret_cast<struct sockaddr *>(&address), &addrlen)) == -1) {
         throw std::runtime_error("accept failed: " + std::string(strerror(errno)));
     }
+    char peerIP[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &(address.sin_addr), peerIP, INET_ADDRSTRLEN);
+    std::cout << "Accepted connection from " << peerIP << std::endl;
     return clientSock;
 }
 

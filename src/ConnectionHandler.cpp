@@ -13,12 +13,14 @@ void ConnectionHandler::checkForConnections() {
 
 void ConnectionHandler::handleConnection(const unsigned long long &clientSock) {
     std::cout << "Client Socket: " << clientSock << std::endl;
+    //wait for message from client
     while (true) {
     }
 }
 
 void ConnectionHandler::connectTo(std::string &ip, int &port) {
     ni.connectToSocket(ip, port);
+    //now that peer1 and peer2 are connected, client sends msg
 }
 
 
