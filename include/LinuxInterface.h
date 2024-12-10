@@ -9,6 +9,7 @@
 #include <errno.h>
 #include <stdexcept>
 #include <iostream>
+#include <sys/types.h>
 
 #include "NetworkingInterface.h"
 
@@ -31,6 +32,8 @@ public:
     std::pair<std::string, int> receiveDataUDP(char *recvbuf, int recvbuflen) override;
 
     void broadcast(std::string sendbuf, int sendbuflen) override;
+
+    void connectToSocket(std::string &ip, int &port) override;
 
 private:
     void initialise() override;

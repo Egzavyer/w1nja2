@@ -20,9 +20,16 @@ int main() {
 #endif //_Win32
 
     Peer peer(peerDiscovery, fileHandler);
-    std::thread t(&Peer::startPeer,peer);
+    peer.startPeer();
+    /*std::thread t(&Peer::startPeer,peer);
     if (t.joinable()) {
         t.join();
+    }*/
+    std::string ip = "172.18.29.105";
+    peer.connectToPeer(ip);
+
+    while (true) {
+        //TODO: find a way to keep it running
     }
     return 0;
 }

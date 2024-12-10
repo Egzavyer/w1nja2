@@ -8,15 +8,19 @@
 
 class Peer {
 public:
-    explicit Peer(PeerDiscovery &peerDiscovery, ConnectionHandler &fileHandler);
+    explicit Peer(PeerDiscovery &peerDiscovery, ConnectionHandler &connectionHandler);
 
     void startPeer();
+
+    void connectToPeer(std::string &ip);
 
 private:
     void startPeerDiscovery();
 
+    void startHandlingConnections();
+
     PeerDiscovery &pd;
-    ConnectionHandler &fh;
+    ConnectionHandler &ch;
 };
 
 

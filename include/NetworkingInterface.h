@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <string>
+#include <cstring>
 
 class NetworkingInterface {
 public:
@@ -21,6 +22,8 @@ public:
     virtual void broadcast(std::string sendbuf, int sendbuflen) = 0;
 
     virtual std::pair<std::string, int> receiveDataUDP(char *recvbuf, int recvbuflen) = 0;
+
+    virtual void connectToSocket(std::string &ip, int &port) = 0;
 
     virtual void initialise() = 0;
 

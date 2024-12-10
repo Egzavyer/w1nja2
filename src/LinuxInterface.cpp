@@ -94,6 +94,22 @@ void LinuxInterface::broadcast(std::string sendbuf, int sendbuflen) {
     }
 }
 
+void LinuxInterface::connectToSocket(std::string &ip, int &port) {
+    struct sockaddr_in addr;
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+
+    if (inet_pton(AF_INET, ip.c_str(), &addr.sin_addr) <= 0) {
+        throw std::runtime_error("inet_pton failed: " + std::string(strerror(errno)));
+    }
+
+    if (connect(tcpSocket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) < 0) {
+        throw std::runtime_error("connect failed: " + std::string(strerror(errno)));
+    }
+    std::cout << "CONNECTED\n";
+}
+
+
 unsigned long long LinuxInterface::getUDPSocket() {
     return udpSocket;
 }
