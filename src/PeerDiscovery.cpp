@@ -6,7 +6,7 @@ PeerDiscovery::PeerDiscovery(NetworkingInterface &networkingInterface) : ni(netw
 
 void PeerDiscovery::discoverPeers() {
     std::cout << "UDP Socket: " << ni.getUDPSocket() << std::endl;
-    std::cout << "TCP Socket: " << ni.getTCPSocket() << std::endl;
+    std::cout << "TCP Socket: " << ni.getTCPServerSocket() << std::endl;
 
     while (true) {
         constexpr int recvbuflen = 1024;
@@ -25,12 +25,12 @@ void PeerDiscovery::discoverPeers() {
 }
 
 void PeerDiscovery::broadcastRequest() const {
-    std::string sendbuf = "0" + std::to_string(ni.getTCPPort());
+    std::string sendbuf = "0" + std::to_string(ni.getTCPServerPort());
     ni.broadcast(sendbuf, static_cast<int>(sendbuf.size()));
 }
 
 void PeerDiscovery::broadcastResponse() const {
-    std::string sendbuf = "1" + std::to_string(ni.getTCPPort());
+    std::string sendbuf = "1" + std::to_string(ni.getTCPServerPort());
     ni.broadcast(sendbuf, static_cast<int>(sendbuf.size()));
 }
 

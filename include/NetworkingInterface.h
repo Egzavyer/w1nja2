@@ -13,11 +13,15 @@ public:
 
     virtual unsigned long long getUDPSocket() = 0;
 
-    virtual unsigned long long getTCPSocket() = 0;
+    virtual unsigned long long getTCPServerSocket() = 0;
+
+    virtual unsigned long long getTCPClientSocket() = 0;
 
     virtual int getUDPPort() = 0;
 
-    virtual int getTCPPort() = 0;
+    virtual int getTCPServerPort() = 0;
+
+    virtual int getTCPClientPort() = 0;
 
     virtual void broadcast(std::string sendbuf, int sendbuflen) = 0;
 
@@ -25,15 +29,21 @@ public:
 
     virtual void connectToSocket(std::string &ip, int &port) = 0;
 
+    virtual void listenOnSocket() = 0;
+
+    virtual const unsigned long long acceptSocketConnection() = 0;
+
     virtual void initialise() = 0;
 
     virtual void createUDPSocket() = 0;
 
-    virtual void createTCPSocket() = 0;
+    virtual void createTCPServerSocket() = 0;
+
+    virtual void createTCPClientSocket() = 0;
 
     virtual void bindUDPSocket() = 0;
 
-    virtual void bindTCPSocket() = 0;
+    virtual void bindTCPServerSocket() = 0;
 };
 
 #endif //NETWORKING_INTERFACE_H

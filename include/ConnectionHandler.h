@@ -15,7 +15,7 @@ public:
     void connectTo(std::string &ip, int &port);
 
 private:
-    void handleConnection();
+    void handleConnection(const unsigned long long &clientSock);
 
     NetworkingInterface &ni;
 };
