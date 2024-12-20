@@ -24,6 +24,7 @@ void LinuxInterface::startup() {
     bindUDPSocket();
     bindTCPServerSocket();
     listenOnSocket();
+    setOwnIp();
 }
 
 void LinuxInterface::initialise() {
@@ -181,4 +182,33 @@ int LinuxInterface::getTCPServerPort() {
 
 int LinuxInterface::getTCPClientPort() {
     return tcpClientPort;
+}
+
+std::string &LinuxInterface::getOwnIp() {
+    return ownIP;
+}
+
+
+void LinuxInterface::setOwnIp() {
+    struct addrinfo *result = nullptr;
+    struct addrinfo *ptr = nullptr;
+    struct addrinfo hints;
+
+    struct sockaddr_in *sockaddr_ipv4;
+    char ipstringbuffer[INET_ADDRSTRLEN];
+
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_protocol = IPPROTO_TCP;
+
+    char hostname[256];
+    gethostname(hostname, sizeof(hostname));
+
+    if (getaddrinfo(hostname, "0", &hints, &result) != 0) {
+        throw std::runtime_error("getaddrinfo failed: " + std::string(strerror(errno)));
+    }
+    sockaddr_ipv4 = (struct sockaddr_in *) result->ai_addr;
+    ownIP = inet_ntoa(sockaddr_ipv4->sin_addr);
+    std::cout << "IP Address is: " << ownIP << std::endl;
 }

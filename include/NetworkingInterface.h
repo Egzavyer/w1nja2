@@ -23,6 +23,10 @@ public:
 
     virtual int getTCPClientPort() = 0;
 
+    virtual std::string &getOwnIp() = 0;
+
+    virtual void setOwnIp() = 0;
+
     virtual void broadcast(std::string sendbuf, int sendbuflen) = 0;
 
     virtual std::pair<std::string, int> receiveDataUDP(char *recvbuf, int recvbuflen) = 0;

@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <sys/types.h>
+#include <netdb.h>
 
 #include "NetworkingInterface.h"
 
@@ -32,6 +33,8 @@ public:
     int getTCPServerPort() override;
 
     int getTCPClientPort() override;
+
+    std::string &getOwnIp() override;
 
     std::pair<std::string, int> receiveDataUDP(char *recvbuf, int recvbuflen) override;
 
@@ -60,12 +63,15 @@ private:
 
     void listenOnSocket() override;
 
+    void setOwnIp() override;
+
     int udpSocket;
     int tcpServerSocket;
     int tcpClientSocket;
     int udpPort;
     int tcpServerPort;
     int tcpClientPort;
+    std::string ownIP;
     struct sockaddr_in broadcastAddr{};
 };
 
