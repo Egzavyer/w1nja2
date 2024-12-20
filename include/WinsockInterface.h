@@ -19,34 +19,55 @@ public:
 
     unsigned long long getUDPSocket() override;
 
-    unsigned long long getTCPSocket() override;
+    unsigned long long getTCPServerSocket() override;
+
+    unsigned long long getTCPClientSocket() override;
 
     int getUDPPort() override;
 
-    int getTCPPort() override;
+    int getTCPServerPort() override;
+
+    int getTCPClientPort() override;
+
+    std::string &getOwnIp() override;
 
     std::pair<std::string, int> receiveDataUDP(char *recvbuf, int recvbuflen) override;
 
     void broadcast(std::string sendbuf, int sendbuflen) override;
 
+    void connectToSocket(std::string &ip, int &port) override;
+
+    const unsigned long long acceptSocketConnection() override;
+
+    int sendDataTCP(const unsigned long long &socket, const char *sendbuf, int sendbuflen) override;
+
+    int receiveDataTCP(const unsigned long long &socket, char *recvbuf, int recvbuflen) override;
 
 private:
     void initialise() override;
 
     void createUDPSocket() override;
 
-    void createTCPSocket() override;
+    void createTCPServerSocket() override;
+
+    void createTCPClientSocket() override;
 
     void bindUDPSocket() override;
 
-    void bindTCPSocket() override;
+    void bindTCPServerSocket() override;
+
+    void listenOnSocket() override;
+
+    void setOwnIp() override;
 
     SOCKET udpSocket;
-    SOCKET tcpSocket;
+    SOCKET tcpServerSocket;
+    SOCKET tcpClientSocket;
     int udpPort;
-    int tcpPort;
+    int tcpServerPort;
+    int tcpClientPort;
+    std::string ownIP;
     struct sockaddr_in broadcastAddr{};
-
 };
 
 #endif //_WIN32
