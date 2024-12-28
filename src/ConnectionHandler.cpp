@@ -17,6 +17,7 @@ void ConnectionHandler::handleConnection(const unsigned long long &clientSock) c
     char recvbuf[1024];
     int bytes;
     do {
+        memset(recvbuf, 0, sizeof(recvbuf));
         if ((bytes = ni.receiveDataTCP(clientSock, recvbuf, 1024)) > 0) {
             std::cout << "Bytes received: " << bytes << std::endl;
             std::cout << recvbuf << std::endl;
