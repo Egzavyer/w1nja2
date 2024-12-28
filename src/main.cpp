@@ -24,8 +24,6 @@ int main() {
     FileHandler fileHandler(li);
 #endif //_Win32
 
-    fileHandler.getAvailableFiles();
-    fileHandler.sendFile("test.txt");
     Peer peer(peerDiscovery, connectionHandler, fileHandler);
     peer.startPeer();
     /*std::thread t(&Peer::startPeer,peer);
@@ -47,6 +45,8 @@ int main() {
     }
     peer.connectToPeer(ip);
 
+    fileHandler.getAvailableFiles();
+    fileHandler.sendFile("test.txt");
     while (true) {
         //TODO: find a way to keep it running
     }

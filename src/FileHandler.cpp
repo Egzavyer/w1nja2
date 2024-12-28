@@ -38,7 +38,8 @@ void FileHandler::sendFile(const std::string &filename) {
         }
         file.read(sendbuf, sendbuflen);
         sendbuf[sendbuflen] = '\0';
-        std::cout << sendbuf << '\n';
+        ni.sendDataTCP(ni.getTCPClientSocket(), sendbuf, sendbuflen);
+        //std::cout << sendbuf << '\n';
         bytesRemaining -= sendbuflen;
     }
 }
