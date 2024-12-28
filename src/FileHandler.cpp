@@ -21,12 +21,24 @@ void FileHandler::getAvailableFiles() {
 
 void FileHandler::sendFile(const std::string &filename) {
     char sendbuf[8192];
-    std::ifstream file(defaultPath / filename);
+    size_t bytesRemaining;
+    size_t sendbuflen = 0;
+    std::ifstream file(defaultPath / filename, std::ios::binary);
 
     file.seekg(0, std::ios::end);
     size_t fileSize = file.tellg();
     file.seekg(0, std::ios::beg);
 
-    file.read(sendbuf, fileSize);
-    std::cout << sendbuf << '\n';
+    bytesRemaining = fileSize;
+    while (bytesRemaining > 0) {
+        if (bytesRemaining > 8191) {
+            sendbuflen = 8191;
+        } else {
+            sendbuflen = bytesRemaining;
+        }
+        file.read(sendbuf, sendbuflen);
+        sendbuf[sendbuflen] = '\0';
+        std::cout << sendbuf << '\n';
+        bytesRemaining -= sendbuflen;
+    }
 }

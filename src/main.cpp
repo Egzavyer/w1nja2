@@ -25,7 +25,7 @@ int main() {
 #endif //_Win32
 
     fileHandler.getAvailableFiles();
-    fileHandler.sendFile("hello.txt");
+    fileHandler.sendFile("test.txt");
     Peer peer(peerDiscovery, connectionHandler, fileHandler);
     peer.startPeer();
     /*std::thread t(&Peer::startPeer,peer);
