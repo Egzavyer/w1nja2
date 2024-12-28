@@ -5,6 +5,7 @@
 #include "Peer.h"
 #include "ConnectionHandler.h"
 #include <cctype>
+#include "FileHandler.h"
 
 
 int main() {
@@ -12,15 +13,20 @@ int main() {
     WinsockInterface wi;
     wi.startup();
     PeerDiscovery peerDiscovery(wi);
-    ConnectionHandler fileHandler(wi);
+    ConnectionHandler connectionHandler(wi);
+    FileHandler fileHandler(wi);
+
 #elif __linux__
     LinuxInterface li;
     li.startup();
     PeerDiscovery peerDiscovery(li);
-    ConnectionHandler fileHandler(li);
+    ConnectionHandler connectionHandler(li);
+    FileHandler fileHandler(li);
 #endif //_Win32
 
-    Peer peer(peerDiscovery, fileHandler);
+    fileHandler.getAvailableFiles();
+    fileHandler.sendFile("hello.txt");
+    Peer peer(peerDiscovery, connectionHandler, fileHandler);
     peer.startPeer();
     /*std::thread t(&Peer::startPeer,peer);
     if (t.joinable()) {

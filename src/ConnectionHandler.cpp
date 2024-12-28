@@ -12,7 +12,7 @@ void ConnectionHandler::checkForConnections() {
 }
 
 
-void ConnectionHandler::handleConnection(const unsigned long long &clientSock) {
+void ConnectionHandler::handleConnection(const unsigned long long &clientSock) const {
     std::cout << "Client Socket: " << clientSock << std::endl;
     char recvbuf[1024];
     int bytes;
@@ -31,7 +31,7 @@ void ConnectionHandler::handleConnection(const unsigned long long &clientSock) {
     }
 }
 
-void ConnectionHandler::connectTo(std::string &ip, int &port) {
+void ConnectionHandler::connectTo(std::string &ip, int &port) const {
     ni.connectToSocket(ip, port);
     //now that peer1 and peer2 are connected, client sends msg
     std::string sendbuf = "Hello, World!\n";

@@ -1,5 +1,5 @@
-#ifndef FILE_HANDLER_H
-#define FILE_HANDLER_H
+#ifndef CONNECTION_HANDLER_H
+#define CONNECTION_HANDLER_H
 
 #include <iostream>
 #include <thread>
@@ -12,13 +12,13 @@ public:
 
     void checkForConnections();
 
-    void connectTo(std::string &ip, int &port);
+    void connectTo(std::string &ip, int &port) const;
 
 private:
-    void handleConnection(const unsigned long long &clientSock);
+    void handleConnection(const unsigned long long &clientSock) const;
 
     NetworkingInterface &ni;
 };
 
 
-#endif //FILE_HANDLER_H
+#endif //CONNECTION_HANDLER_H

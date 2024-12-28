@@ -1,6 +1,7 @@
 #ifndef PEER_H
 #define PEER_H
 
+#include <FileHandler.h>
 #include <thread>
 
 #include "PeerDiscovery.h"
@@ -8,7 +9,7 @@
 
 class Peer {
 public:
-    explicit Peer(PeerDiscovery &peerDiscovery, ConnectionHandler &connectionHandler);
+    explicit Peer(PeerDiscovery &peerDiscovery, ConnectionHandler &connectionHandler, FileHandler &fileHandler);
 
     void startPeer();
 
@@ -23,6 +24,7 @@ private:
 
     PeerDiscovery &pd;
     ConnectionHandler &ch;
+    FileHandler &fh;
 };
 
 
