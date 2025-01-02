@@ -14,11 +14,12 @@ void ConnectionHandler::checkForConnections() {
 
 void ConnectionHandler::handleConnection(const unsigned long long &clientSock) const {
     std::cout << "Client Socket: " << clientSock << std::endl;
-    char recvbuf[1024];
+    char recvbuf[8192];
     int bytes;
+    //TODO: fit FileHandler::receiveFile logic here somehow
     do {
         memset(recvbuf, 0, sizeof(recvbuf));
-        if ((bytes = ni.receiveDataTCP(clientSock, recvbuf, 1024)) > 0) {
+        if ((bytes = ni.receiveDataTCP(clientSock, recvbuf, sizeof(recvbuf))) > 0) {
             std::cout << "Bytes received: " << bytes << std::endl;
             std::cout << recvbuf << std::endl;
         } else if (bytes == 0) {
@@ -28,13 +29,13 @@ void ConnectionHandler::handleConnection(const unsigned long long &clientSock) c
         }
     } while (bytes > 0);
     //wait for message from client
-    while (true) {
-    }
+    //while (true) {}
 }
 
 void ConnectionHandler::connectTo(std::string &ip, int &port) const {
     ni.connectToSocket(ip, port);
     //now that peer1 and peer2 are connected, client sends msg
+    //TODO: fit FileHandler::sendFile logic here somehow
     std::string sendbuf = "Hello, World!\n";
     int bytes;
     if ((bytes = ni.sendDataTCP(ni.getTCPClientSocket(), sendbuf.c_str(), sendbuf.size())) == -1) {

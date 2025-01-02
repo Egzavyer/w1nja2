@@ -42,4 +42,21 @@ void FileHandler::sendFile(const std::string &filename) {
         //std::cout << sendbuf << '\n';
         bytesRemaining -= sendbuflen;
     }
+    file.close();
 }
+
+void FileHandler::receiveFile(const std::string &filename, const int &fileSize) {
+    char recvbuf[8192];
+    size_t bytesRemaining = fileSize;
+    size_t totalBytesReceived = 0;
+
+    std::ofstream file(defaultPath / filename, std::ios::binary);
+    while (totalBytesReceived < fileSize) {
+        const int bytesReceived = ni.receiveDataTCP(ni.getTCPClientSocket(), recvbuf, sizeof(recvbuf));
+        file.write(recvbuf, bytesReceived);
+        bytesRemaining -= bytesReceived;
+        totalBytesReceived += bytesReceived;
+    }
+    file.close();
+}
+

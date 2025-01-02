@@ -15,6 +15,8 @@ public:
 
     void sendFile(const std::string &filename);
 
+    void receiveFile(const std::string &filename, const int &fileSize);
+
 private:
     NetworkingInterface &ni;
     const std::filesystem::path defaultPath{"C:/dev/cpp/w1nja2/files"};
