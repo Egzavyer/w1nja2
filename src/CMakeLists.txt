@@ -5,7 +5,6 @@ if (WIN32)
             WinsockInterface.cpp
             Peer.cpp
             ConnectionHandler.cpp
-            FileHandler.cpp
     )
 elseif (UNIX)
     set(SOURCES
@@ -14,7 +13,6 @@ elseif (UNIX)
             LinuxInterface.cpp
             Peer.cpp
             ConnectionHandler.cpp
-            FileHandler.cpp
 
     )
 endif (WIN32)

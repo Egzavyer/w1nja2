@@ -5,7 +5,6 @@
 #include "Peer.h"
 #include "ConnectionHandler.h"
 #include <cctype>
-#include "FileHandler.h"
 
 
 int main() {
@@ -14,17 +13,15 @@ int main() {
     wi.startup();
     PeerDiscovery peerDiscovery(wi);
     ConnectionHandler connectionHandler(wi);
-    FileHandler fileHandler(wi);
 
 #elif __linux__
     LinuxInterface li;
     li.startup();
     PeerDiscovery peerDiscovery(li);
     ConnectionHandler connectionHandler(li);
-    FileHandler fileHandler(li);
 #endif //_Win32
 
-    Peer peer(peerDiscovery, connectionHandler, fileHandler);
+    Peer peer(peerDiscovery, connectionHandler);
     peer.startPeer();
     /*std::thread t(&Peer::startPeer,peer);
     if (t.joinable()) {
@@ -45,8 +42,8 @@ int main() {
     }
     peer.connectToPeer(ip);
 
-    fileHandler.getAvailableFiles();
-    fileHandler.sendFile("test.txt");
+    connectionHandler.getAvailableFiles();
+    connectionHandler.sendFile("test.txt");
     while (true) {
         //TODO: find a way to keep it running
     }
