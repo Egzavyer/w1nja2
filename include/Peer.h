@@ -14,6 +14,8 @@ public:
 
     void connectToPeer(std::string &ip);
 
+    std::unordered_map<int, std::string> choosePeer();
+
 private:
     void startPeerDiscovery();
 

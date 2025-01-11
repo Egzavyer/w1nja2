@@ -15,6 +15,7 @@ void PeerDiscovery::discoverPeers() {
         //while (getPeerTable().size() < 2) {
         auto [ip, port] = ni.receiveDataUDP(recvbuf, recvbuflen);
         if (!peerTable.contains(ip) && ip != ni.getOwnIp()) {
+            //if (!peerTable.contains(ip)) {
             addPeer(ip, port);
             if (recvbuf[0] == '0') {
                 broadcastResponse(); //TODO: maybe send info directly to requester's udp port
