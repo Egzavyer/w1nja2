@@ -13,7 +13,9 @@ void ConnectionHandler::checkForConnections() {
 
 
 void ConnectionHandler::handleConnection(const unsigned long long &clientSock) const {
-    std::cout << "Client Socket: " << clientSock << std::endl;
+    int s = 8193;
+    receiveFile("test2.txt", s);
+    /*std::cout << "Client Socket: " << clientSock << std::endl;
     char recvbuf[8192];
     int bytes;
     //TODO: fit ConnectionHandler::receiveFile logic here somehow
@@ -27,7 +29,7 @@ void ConnectionHandler::handleConnection(const unsigned long long &clientSock) c
         } else {
             throw std::runtime_error("recv failed: " + std::string(strerror(errno)));
         }
-    } while (bytes > 0);
+    } while (bytes > 0);*/
     //wait for message from client
     //while (true) {}
 }
@@ -36,12 +38,14 @@ void ConnectionHandler::connectTo(std::string &ip, int &port) const {
     ni.connectToSocket(ip, port);
     //now that peer1 and peer2 are connected, client sends msg
     //TODO: fit ConnectionHandler::sendFile logic here somehow
-    std::string sendbuf = "Hello, World!\n";
+    sendFile("test.txt");
+
+    /*std::string sendbuf = "Hello, World!\n";
     int bytes;
     if ((bytes = ni.sendDataTCP(ni.getTCPClientSocket(), sendbuf.c_str(), sendbuf.size())) == -1) {
         throw std::runtime_error("send failed: " + std::string(strerror(errno)));
     }
-    std::cout << "Bytes sent: " << bytes << std::endl;
+    std::cout << "Bytes sent: " << bytes << std::endl;*/
 }
 
 //SENDER
@@ -60,7 +64,7 @@ void ConnectionHandler::getAvailableFiles() {
     }
 }
 
-void ConnectionHandler::sendFile(const std::string &filename) {
+void ConnectionHandler::sendFile(const std::string &filename) const {
     char sendbuf[8192];
     size_t bytesRemaining;
     size_t sendbuflen = 0;
@@ -86,18 +90,21 @@ void ConnectionHandler::sendFile(const std::string &filename) {
     file.close();
 }
 
-void ConnectionHandler::receiveFile(const std::string &filename, const int &fileSize) {
+void ConnectionHandler::receiveFile(const std::string &filename, const int &fileSize) const {
     char recvbuf[8192];
     size_t bytesRemaining = fileSize;
     size_t totalBytesReceived = 0;
 
     std::ofstream file(defaultPath / filename, std::ios::binary);
     while (totalBytesReceived < fileSize) {
+        memset(recvbuf, 0, sizeof(recvbuf));
+        //TODO: might have to pass socket instead of getting from ni bc maybe issues when multiple peers connected
         const int bytesReceived = ni.receiveDataTCP(ni.getTCPClientSocket(), recvbuf, sizeof(recvbuf));
         file.write(recvbuf, bytesReceived);
         bytesRemaining -= bytesReceived;
         totalBytesReceived += bytesReceived;
     }
+    std::cout << "DONE\n";
     file.close();
 }
 

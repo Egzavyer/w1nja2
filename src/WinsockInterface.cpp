@@ -92,7 +92,7 @@ std::pair<std::string, int> WinsockInterface::receiveDataUDP(char *recvbuf, int 
     int bytesReceived;
     char ipbuf[INET_ADDRSTRLEN];
     struct sockaddr_in peerAddr{};
-    socklen_t peeraddrlen = sizeof(struct sockaddr_in);;
+    socklen_t peeraddrlen = sizeof(struct sockaddr_in);
     if ((bytesReceived = recvfrom(udpSocket, recvbuf, recvbuflen, 0, reinterpret_cast<sockaddr *>(&peerAddr),
                                   &peeraddrlen)) == INVALID_SOCKET) {
         throw std::runtime_error("recvfrom failed: " + std::string(strerror(errno)));

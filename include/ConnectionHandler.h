@@ -18,13 +18,12 @@ public:
 
     void getAvailableFiles();
 
-    void sendFile(const std::string &filename);
+    void sendFile(const std::string &filename) const;
 
-    void receiveFile(const std::string &filename, const int &fileSize);
+    void receiveFile(const std::string &filename, const int &fileSize) const;
 
 private:
     void handleConnection(const unsigned long long &clientSock) const;
-
 
     NetworkingInterface &ni;
     const std::filesystem::path defaultPath{"C:/dev/cpp/w1nja2/files"};
